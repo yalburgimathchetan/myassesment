@@ -100,6 +100,9 @@ def check_ASG_instance_has_same_securitygroup_image_vpc(asginfo):
         status = True
     return status
 
+def verify_SG_ImageID_VPCID():
+    pass
+    
 def get_uptime_of_running_ASG_instances(asginfo):
     asg_instance_ids = get_asg_instance_ids(asginfo)
     ec2 = boto3.client("ec2")
