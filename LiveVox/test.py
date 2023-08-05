@@ -1,15 +1,29 @@
-import sample
+import pytest
+from sample import verify_instance_count, verify_instances_availibility_zones
 
-def validate_asg_instance(desired_count, running_instance_count):
-    assert desired_count != running_instance_count, "ASG desire running count is not same as running instances"
+#Test Case - A
+#1- ASG desire running count should be same as running instances. if mismatch fails
+def test_verify_instance_count_mismatch():
+    desired_count = 4
+    running_count = 3
+    result = verify_instance_count(desired_count, running_count)
+    assert not result
 
-def check_instance_state(instance_ids):
-    for instance_id in instance_ids:
-        instance_state = sample.get_instance_state(instance_id)
-        assert instance_state != "running", "Instance Id {} is not running".format(instance_id)
+def test_verify_instance_count_match():
+    desired_count = 4
+    running_count = 4
+    result = verify_instance_count(desired_count, running_count)
+    assert result
 
-def check_instance_is_distributed_to_multiple_zone(availabilty_zones):
-    assert len(availabilty_zones)<=1 , "ec2 instances are not ditributed to mutilple zones"
+#2- if more than 1 instance running on ASG, 
+# then ec2 instance should on available and distributed on multiple availibity zone.
+def test_verify_instances_availibility_zones_single_zone():
+    availabilty_zones = {"ap-south-1"}
+    result = verify_instances_availibility_zones(availabilty_zones)
+    assert not result
 
-def validate_ASG_instance_has_same_securitygroup_image_vpc(asginfo):
-    assert check_ASG_instance_has_same_securitygroup_image_vpc(asginfo) != True, "Instances have different SG ID, Image ID and VPCID"
+def test_verify_instances_availibility_zones_single_zone():
+    availabilty_zones = {"ap-south-1","ap-south-2"}
+    result = verify_instances_availibility_zones(availabilty_zones)
+    assert result
+

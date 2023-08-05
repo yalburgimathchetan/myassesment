@@ -30,9 +30,9 @@ def get_running_instance_count(asginfo):
     else:
         print("Please pass correct ASG info as arguments to get running instance count")
 
-def verify_instance_count(asginfo):
+def verify_instance_count(desired_count, running_count):
     status = False
-    if get_desired_count(asginfo) == get_running_instance_count(asginfo):
+    if desired_count == running_count:
         status = True
     return status
 
@@ -72,6 +72,13 @@ def get_instances_availibility_zones():
             availabilty_zones.add(availabilty_zone)
     return availabilty_zones
 
+def verify_instances_availibility_zones():
+    status = False
+    availabilty_zones = get_instances_availibility_zones()
+    if len(availabilty_zones)>1:
+        status = True
+    return status
+    
 def check_ASG_instance_has_same_securitygroup_image_vpc(asginfo):
     status = False
     asg_insatnce_ids = get_asg_instance_ids(asginfo)
@@ -142,7 +149,7 @@ def main(argv):
         response=get_asg_describe(str(sys.argv[1]))
         print(response)
         desired_count = get_desired_count(response)
-        running_instance_count = get_running_instance_count(response)
+        running_count = get_running_instance_count(response)
     else:
         print("Please pass correct arguments")
         print("Usage ./sample-test.py asgname")
