@@ -19,12 +19,12 @@ def test_verify_instance_count_match():
 # then ec2 instance should on available and distributed on multiple availibity zone.
 def test_verify_instances_availibility_zones_single_zone():
     availabilty_zones = {"ap-south-1"}
-    result = verify_instances_availibility_zones(availabilty_zones)
+    result = verify_instances_availibility_zones()
     assert not result
 
 def test_verify_instances_availibility_zones_single_zone():
     availabilty_zones = {"ap-south-1","ap-south-2"}
-    result = verify_instances_availibility_zones(availabilty_zones)
+    result = verify_instances_availibility_zones()
     assert result
 
 # 3- SecuirtyGroup, ImageID and VPCID should be same on ASG running instances.
